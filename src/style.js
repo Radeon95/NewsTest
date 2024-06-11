@@ -53,3 +53,12 @@ export const LogoContainer = styled.div`
   margin-top: auto;
   padding-top: 10px;
 `;
+
+export const PageImage = styled.img`
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  height: 50%;
+  object-fit: cover;
+`;

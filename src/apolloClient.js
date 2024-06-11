@@ -23,6 +23,16 @@ export const GET_ARTICLES = gql`
     }
   }
 `;
+export const GET_ARTICLE_BY_ID = gql`
+  query GetArticleById($id: String!) {
+    content(id: $id) {
+      id
+      title {
+        short
+      }
+    }
+  }
+`;
 
 client
   .query({
@@ -30,6 +40,20 @@ client
     variables: {
       skip: 0,
       take: 10,
+    },
+  })
+  .then((response) => {
+    console.log("Fetched data:", response.data);
+  })
+  .catch((error) => {
+    console.error("Error fetching data:", error);
+  });
+
+client
+  .query({
+    query: GET_ARTICLE_BY_ID,
+    variables: {
+      id: "83b64c50-8af1-478e-a16f-c3f4520d7c3b",
     },
   })
   .then((response) => {
