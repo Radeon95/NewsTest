@@ -11,7 +11,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" Component={News} />
-          <Route path="/article/:id" Component={Article} />
+          <Route path="/:parentUrl/:url" Component={Article} />
         </Routes>
       </BrowserRouter>
     </ApolloProvider>

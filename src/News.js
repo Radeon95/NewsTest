@@ -12,8 +12,9 @@ import {
   LogoContainer,
   Content,
   Description,
+  MainLogo,
 } from "./style";
-
+import logo from "./img/poinLogo.svg";
 import { Link } from "react-router-dom";
 
 import { formatTime, truncateText, formatDateOrToday } from "./utils";
@@ -33,7 +34,6 @@ const News = () => {
   } = useQuery(GET_ARTICLES, {
     variables: { skip, take },
   });
-  // console.log(data);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +42,6 @@ const News = () => {
           const uniqueArticles = data.contents.filter(
             (article, i, el) => i === el.findIndex((a) => a.id === article.id)
           );
-          console.log("Fetched data:", data);
 
           uniqueArticles.sort((a, b) => b.dates.posted - a.dates.posted);
 
@@ -86,62 +85,66 @@ const News = () => {
   };
 
   return (
-    <List>
-      {err && <p>{err}</p>}
-      {!loading && complete && articles.length === 0 && !err && (
-        <p> No news available</p>
-      )}
-      {loading && <p>Loading...</p>}
-      {articles.map((article, i) => {
-        const currentDateLabel = formatDateOrToday(article.dates.posted);
-        const currentDateOnly = formatDateOnly(article.dates.posted);
-        const showDateLabel = currentDateOnly !== lastDateLabel;
-        lastDateLabel = showDateLabel ? currentDateOnly : lastDateLabel;
-        return (
-          <React.Fragment key={`${article.id} - ${i}`}>
-            {showDateLabel && <h2>{currentDateLabel}</h2>}
-            <Item>
-              <Link
-                to={`/article/${article.id}`}
-                style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  textDecoration: "none",
-                  color: "inherit",
-                }}
-              >
-                <Image
-                  src={`https://i.simpalsmedia.com/point.md/news/900x900/${article.thumbnail}`}
-                  alt={article.title.short}
-                />
-              </Link>
-              <Content>
+    <>
+      <MainLogo src={logo} alt="Point" />
+      <List>
+        {err && <p>{err}</p>}
+        {!loading && complete && articles.length === 0 && !err && (
+          <p>No news available</p>
+        )}
+        {loading && <p>Loading...</p>}
+        {articles.map((article, i) => {
+          const currentDateLabel = formatDateOrToday(article.dates.posted);
+          const currentDateOnly = formatDateOnly(article.dates.posted);
+          const showDateLabel = currentDateOnly !== lastDateLabel;
+          lastDateLabel = showDateLabel ? currentDateOnly : lastDateLabel;
+
+          return (
+            <React.Fragment key={`${article.id} - ${i}`}>
+              {showDateLabel && <h2>{currentDateLabel}</h2>}
+              <Item>
                 <Link
-                  to={`/article/${article.id}`}
+                  to={`/${article.cparent.url.ru}/${article.url}`}
                   style={{
+                    display: "flex",
+                    alignItems: "flex-start",
                     textDecoration: "none",
                     color: "inherit",
                   }}
                 >
-                  <Title>{article.title.short}</Title>
-                </Link>
-                <Description>
-                  {truncateText(article.description.intro, 150)}
-                </Description>
-                <LogoContainer>
-                  <Logo
-                    src={`https://i.simpalsmedia.com/point.md/logo/${article.parents[1].attachment}`}
-                    alt="logo"
+                  <Image
+                    src={`https://i.simpalsmedia.com/point.md/news/900x900/${article.thumbnail}`}
+                    alt={article.title.short}
                   />
-                  <Time>{formatTime(article.dates.posted)}</Time>
-                </LogoContainer>
-              </Content>
-            </Item>
-          </React.Fragment>
-        );
-      })}
-      <div ref={ref} style={{ height: "20px" }}></div>
-    </List>
+                </Link>
+                <Content>
+                  <Link
+                    to={`/${article.cparent.url.ru}/${article.url}`}
+                    style={{
+                      textDecoration: "none",
+                      color: "inherit",
+                    }}
+                  >
+                    <Title>{article.title.short}</Title>
+                  </Link>
+                  <Description>
+                    {truncateText(article.description.intro, 150)}
+                  </Description>
+                  <LogoContainer>
+                    <Logo
+                      src={`https://i.simpalsmedia.com/point.md/logo/${article.parents[1].attachment}`}
+                      alt="logo"
+                    />
+                    <Time>{formatTime(article.dates.posted)}</Time>
+                  </LogoContainer>
+                </Content>
+              </Item>
+            </React.Fragment>
+          );
+        })}
+        <div ref={ref} style={{ height: "20px" }}></div>
+      </List>
+    </>
   );
 };
 

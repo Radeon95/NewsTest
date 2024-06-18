@@ -8,7 +8,7 @@ export const List = styled.div`
 `;
 export const ListArticle = styled.div`
   background-color: #fff;
-  max-width: 800px;
+  max-width: 1000px;
   margin: auto;
   padding: 20px;
 `;
@@ -154,9 +154,10 @@ export const ArticleDescription = styled.p`
 export const ArticleContent = styled.div`
   color: rgb(15, 23, 42);
   font-weight: 400;
-  font-size: 18px;
+  font-size: 22px;
   letter-spacing: 0px;
   line-height: 27px;
+  font-family: Onest, sans-serif, Helvetica;
 `;
 export const Source = styled.p`
   color: rgb(128, 128, 128);
@@ -174,10 +175,20 @@ export const ArticleLogoBottom = styled.img`
 export const Caption = styled.figcaption`
   width: 100%;
   color: rgb(128, 128, 128);
-  font-size: 14px;
+  font-size: 20px;
   letter-spacing: 0px;
   line-height: 16px;
   padding-top: 8px;
   word-break: break-word;
   margin-bottom: 24px;
+`;
+
+export const MainLogo = styled.img`
+  display: block;
+  width: 170px;
+  height: 48px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 100px;
+  padding-top: 100px;
 `;
