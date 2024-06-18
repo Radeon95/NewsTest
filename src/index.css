@@ -15,3 +15,9 @@ code {
 #root {
   background-color: rgb(223, 220, 216);
 }
+.parsed-content img {
+  width: 100%;
+}
+img {
+  width: 100%;
+}

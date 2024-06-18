@@ -16,9 +16,27 @@ export const GET_ARTICLES = gql`
       take: $take
     ) {
       id
-
+      url
       title {
         short
+      }
+      dates {
+        posted
+      }
+      description {
+        intro
+      }
+      album {
+        source
+      }
+      thumbnail
+      parents {
+        id
+
+        attachment
+        url {
+          ru
+        }
       }
     }
   }
@@ -27,8 +45,30 @@ export const GET_ARTICLE_BY_ID = gql`
   query GetArticleById($id: String!) {
     content(id: $id) {
       id
+
       title {
         short
+      }
+      url
+      dates {
+        posted
+      }
+      parents {
+        id
+
+        attachment
+        url {
+          ru
+        }
+      }
+      description {
+        intro
+        long
+        cut
+      }
+      thumbnail
+      counters {
+        view
       }
     }
   }

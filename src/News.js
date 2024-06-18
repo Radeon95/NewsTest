@@ -13,8 +13,10 @@ import {
   Content,
   Description,
 } from "./style";
-import birdImg from "./img/7.jpg";
+
 import { Link } from "react-router-dom";
+
+import { formatTime, truncateText, formatDateOrToday } from "./utils";
 
 const News = () => {
   const [articles, setArticles] = useState([]);
@@ -41,6 +43,9 @@ const News = () => {
             (article, i, el) => i === el.findIndex((a) => a.id === article.id)
           );
           console.log("Fetched data:", data);
+
+          uniqueArticles.sort((a, b) => b.dates.posted - a.dates.posted);
+
           setArticles((articles) => [...articles, ...uniqueArticles]);
           setComplete(true);
         }
@@ -73,6 +78,13 @@ const News = () => {
     }
   }, [inView, loading, loadMore]);
 
+  let lastDateLabel = "";
+
+  const formatDateOnly = (unixTimestamp) => {
+    const date = new Date(unixTimestamp * 1000);
+    return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+  };
+
   return (
     <List>
       {err && <p>{err}</p>}
@@ -80,33 +92,54 @@ const News = () => {
         <p> No news available</p>
       )}
       {loading && <p>Loading...</p>}
-      {articles.map((article, i) => (
-        <Item key={`${article.id} - ${i}`}>
-          <Link
-            to={`/article/${article.id}`}
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              textDecoration: "none",
-              color: "inherit",
-            }}
-          >
-            <Image
-              src="https://th.bing.com/th/id/OIP.cKTq4enAGO_Wg_Omp0ysngAAAA?rs=1&pid=ImgDetMain"
-              alt={article.title.short}
-            />
-            <Content>
-              <Title>{article.title.short}</Title>
-              <Description>{article.title.short}</Description>
-              <LogoContainer>
-                <Logo src={birdImg} alt="logo" />
-                <Time>{new Date().toLocaleString()}</Time>
-              </LogoContainer>
-            </Content>
-          </Link>
-        </Item>
-      ))}
-
+      {articles.map((article, i) => {
+        const currentDateLabel = formatDateOrToday(article.dates.posted);
+        const currentDateOnly = formatDateOnly(article.dates.posted);
+        const showDateLabel = currentDateOnly !== lastDateLabel;
+        lastDateLabel = showDateLabel ? currentDateOnly : lastDateLabel;
+        return (
+          <React.Fragment key={`${article.id} - ${i}`}>
+            {showDateLabel && <h2>{currentDateLabel}</h2>}
+            <Item>
+              <Link
+                to={`/article/${article.id}`}
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  textDecoration: "none",
+                  color: "inherit",
+                }}
+              >
+                <Image
+                  src={`https://i.simpalsmedia.com/point.md/news/900x900/${article.thumbnail}`}
+                  alt={article.title.short}
+                />
+              </Link>
+              <Content>
+                <Link
+                  to={`/article/${article.id}`}
+                  style={{
+                    textDecoration: "none",
+                    color: "inherit",
+                  }}
+                >
+                  <Title>{article.title.short}</Title>
+                </Link>
+                <Description>
+                  {truncateText(article.description.intro, 150)}
+                </Description>
+                <LogoContainer>
+                  <Logo
+                    src={`https://i.simpalsmedia.com/point.md/logo/${article.parents[1].attachment}`}
+                    alt="logo"
+                  />
+                  <Time>{formatTime(article.dates.posted)}</Time>
+                </LogoContainer>
+              </Content>
+            </Item>
+          </React.Fragment>
+        );
+      })}
       <div ref={ref} style={{ height: "20px" }}></div>
     </List>
   );
