@@ -86,7 +86,9 @@ const News = () => {
 
   return (
     <>
-      <MainLogo src={logo} alt="Point" />
+      <Link to="/">
+        <MainLogo src={logo} alt="Point" />
+      </Link>
       <List>
         {err && <p>{err}</p>}
         {!loading && complete && articles.length === 0 && !err && (
@@ -101,7 +103,9 @@ const News = () => {
 
           return (
             <React.Fragment key={`${article.id} - ${i}`}>
-              {showDateLabel && <h2>{currentDateLabel}</h2>}
+              {showDateLabel && (
+                <h2 style={{ fontSize: "30px" }}>{currentDateLabel}</h2>
+              )}
               <Item>
                 <Link
                   to={`/${article.cparent.url.ru}/${article.url}`}

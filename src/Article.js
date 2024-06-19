@@ -24,6 +24,7 @@ import parse from "html-react-parser";
 import eye from "./img/eye.svg";
 import logo from "./img/poinLogo.svg";
 import { formatNumber, formatSource, formatArticleDate } from "./utils";
+import { Link } from "react-router-dom";
 
 function Article() {
   const { url, parentUrl } = useParams();
@@ -72,7 +73,9 @@ function Article() {
 
   return (
     <>
-      <MainLogo src={logo} alt="Point" />
+      <Link to="/">
+        <MainLogo src={logo} alt="Point" />
+      </Link>
       <ListArticle>
         <SeenBlock>
           <LogoBlock>
