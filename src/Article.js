@@ -51,6 +51,17 @@ function Article() {
     skip: !articleId,
   });
 
+  useEffect(() => {
+    if (
+      data &&
+      data.content &&
+      data.content.title &&
+      data.content.title.short
+    ) {
+      document.title = data.content.title.short;
+    }
+  }, [data]);
+
   if (articleLoading || loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
   if (!data || !data.content) return <p>No data available</p>;
